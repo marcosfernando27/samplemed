@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('posts/index');
 });
+
+Route::get('/create', function () {
+    return view('posts/create');
+});
+

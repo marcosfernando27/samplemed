@@ -2,10 +2,15 @@ import './bootstrap';
 
 import {createApp} from 'vue/dist/vue.esm-bundler.js'
 
-import IndexBlog from './components/blog/IndexBlog.vue'
+// posts
+import IndexPost from './components/posts/IndexPost.vue'
+import CreatePost from './components/posts/CreatePost.vue'
+
 
 const app = createApp({});
 
-app.component("index-blog-component", IndexBlog)
+// posts
+app.component("index-post-component", IndexPost)
+app.component("create-post-component", CreatePost)
 
 app.mount("#app");
