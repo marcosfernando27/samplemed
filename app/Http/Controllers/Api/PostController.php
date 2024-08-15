@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -19,7 +19,7 @@ class PostController extends Controller
 
             $posts = Post::select('title', 'created_at')
                         ->orderBy('created_at', 'desc')
-                        ->get();
+                        ->paginate(20);
 
             return json_encode($posts);
 
@@ -39,7 +39,7 @@ class PostController extends Controller
     /**
      * Save posts blog
     */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
 
         DB::beginTransaction();
@@ -48,8 +48,6 @@ class PostController extends Controller
 
             // requests all
             $data                   = $request->all();
-            // $data['title']          = tratar_nome($data['title']);
-
             // save post
             Post::create($data);
 

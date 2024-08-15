@@ -1,6 +1,6 @@
 <template>
 
-    <h1 class="text-3xl font-bold text-[#50297A] mb-5">
+    <h1>
         Blog da Samplemed
     </h1>
 
@@ -8,37 +8,33 @@
 
     <div class="lg:w-full w-full bg-slate-100 rounded-md px-8">
         <h2 class="text-2xl py-5 float-start ">Meus posts</h2>
-        <a href="/create" class="py-5 float-end">Adicionar Post</a>
+        <a href="/create" class="link">[+] Adicionar Post</a>
     </div>
 
         <div class="lg:w-full w-full">
-            <table class="my-8 p-6">
+            <table class="my-8 p-6 table-auto table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Data de criação</th>
-                        <th>Título</th>
-                        <th>Breve Conteúdo</th>
-                        <th>Editar</th>
-                        <th>Excluir</th>
+                        <th class="border px-4 py-2">Data de criação</th>
+                        <th class="border px-4 py-2">Título</th>
+                        <th class="border px-4 py-2">Editar</th>
+                        <th class="border px-4 py-2">Excluir</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr v-for="post in posts" :key=post.id_post>
-                        <td>
+                        <td class="border  px-4 py-2">
                             {{ post.created_at }}
                         </td>
-                        <td>
+                        <td class="border px-4 py-2">
                             {{ post.title }}
                         </td>
-                        <td>
-                            {{ post.body }}
+                        <td class="border px-4 py-2">
+                            <a href="#" class="link">Editar</a>
                         </td>
-                        <td>
-
-                        </td>
-                        <td>
-
+                        <td class="border px-4 py-2">
+                            <a href="#" class="link">Excluir</a>
                         </td>
                     </tr>
                 </tbody>
@@ -46,29 +42,41 @@
         </div>
 
     </div>
+
+    <!-- Loading -->
+    <loading :is-loading="isLoading" />
+
 </template>
 
 <script>
+import Loading from "../Loading.vue";
+
 export default {
+
+    components: {
+        Loading
+    },
 
     data() {
         return {
             urlBase: '/api/',
-            posts: []
+            posts: [],
+            categories: [],
+            isLoading: false
         }
     },
 
     methods: {
         // lista todos posts
-        index() {
+        allPosts() {
 
             this.isLoading = true
 
-            axios.get(this.urlBase + 'blogs')
+            axios.get(this.urlBase + 'posts')
                 .then(response => {
 
                     this.isLoading = false
-                    this.posts = response.data
+                    this.posts = response.data.data
 
                 })
                 .catch(error => {
@@ -79,7 +87,7 @@ export default {
     },
 
     mounted() {
-        this.index()
+        this.allPosts()
     }
 }
 </script>

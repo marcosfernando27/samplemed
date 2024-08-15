@@ -1,44 +1,125 @@
 <template>
 
-    <h1 class="text-3xl font-bold text-[#50297A]">
+    <h1>
         Blog da Samplemed
     </h1>
 
-    <h2 class="text-2xl py-8 float-start">Adicionar Post</h2>
+    <div class="flex flex-wrap gap-x-5 gap-y-4">
 
-    <a href="/" class="py-8 float-end">Todos Post</a>
+    <div class="lg:w-full w-full bg-slate-100 rounded-md px-8">
+        <h2 class="text-2xl py-5 float-start">Adicionar Post</h2>
+        <a href="/" class="link">Todos Post</a>
+    </div>
 
-    <form action="" method="post">
+    <div class="lg:w-full w-full">
+        <form @submit.prevent="store()" method="post">
 
+            <p class="pt-5">
+                <label for="category">Categoria</label><span class="required">*</span><br>
+                <select v-model="formData.category_id" id="category" class="form-control">
+                    <option value="">... selecione a categoria</option>
+                    <option
+                        v-for="category in categories"
+                        :key=category.id_category
+                        :value=category.id_category>
+                        {{ category.category }}
+                    </option>
+                </select>
 
-    </form>
+                <span v-if="errors.category_id" class="required">{{ errors.category_id[0] }}</span>
+            </p>
+
+            <p class="pt-5">
+                <label for="title">Título </label><span class="required">*</span><br>
+                <input type="text" maxlength="128" v-model="formData.title" class="form-control" id="title">
+
+                <span v-if="errors.title" class="required">{{ errors.title[0] }}</span>
+            </p>
+
+            <p class="pt-5">
+                <label for="body">Conteúdo</label> <span class="required">*</span><br>
+                <textarea id="body" v-model="formData.body" cols="30" rows="15" maxlength="2000" class="form-control"></textarea>
+
+                <span v-if="errors.body" class="required">{{ errors.body[0] }}</span>
+            </p>
+
+            <button type="submit" class="btn-primary mt-5">
+                Salvar
+            </button>
+
+        </form>
+    </div>
+
+    </div>
+
+    <!-- Loading -->
+    <loading :is-loading="isLoading" />
 
 </template>
 
 <script>
+import Loading from "../Loading.vue";
+
 export default {
+
+    components: {
+        Loading
+    },
 
     data() {
         return {
             urlBase: '/api/',
-            formDataPosts: [
-                'title',
-                'body'
-            ]
+            formData: {
+                title: '',
+                body: '',
+                category_id: ''
+            },
+            categories: [],
+            isLoading: false,
+            csrfToken: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            errors: {}
         }
     },
 
     methods: {
+
         // salvar post
         store() {
 
             this.isLoading = true
 
-            axios.get(this.urlBase + 'blogs')
+            axios.post(this.urlBase + 'posts/store', this.formData, {
+                headers: {
+                    'X-CSRF-TOKEN': this.csrfToken
+                }})
+                .then(response =>{
+
+                    if(response.status == 200) {
+                        this.isLoading = false
+                    }
+                })
+                .catch(error => {
+                    this.isLoading = false
+
+                    if (error.response && error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        console.error(error)
+                    }
+
+                })
+        },
+
+        // lista todas categorias
+        allCategories() {
+
+            this.isLoading = true
+
+            axios.get(this.urlBase + 'categories')
                 .then(response => {
 
                     this.isLoading = false
-                    this.posts = response.data
+                    this.categories = response.data
 
                 })
                 .catch(error => {
@@ -49,7 +130,7 @@ export default {
     },
 
     mounted() {
-        this.index()
+        this.allCategories()
     }
 
 }

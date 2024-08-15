@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components{
+
+    h1{
+        @apply text-3xl font-bold text-[#50297A] mb-5
+    }
+
+    .form-control{
+        @apply w-full bg-white border border-gray-300 px-2 rounded-md py-[0.4em] shadow-sm hover:bg-white focus:outline-none focus:border-[#1351B4] text-[1.1em]
+    }
+
+    .btn-primary{
+        @apply text-white bg-[#1351B4] hover:bg-blue-800 mb-10 font-medium rounded-md text-base px-4 py-2 text-center mr-2 focus:ring-4 focus:outline-none focus:ring-blue-300
+    }
+
+    .link{
+        @apply py-5 float-end border-b-2 border-purple-900 text-purple-900 hover:border-0 font-bold
+    }
+
+    .required{
+        @apply text-red-600 text-sm
+    }
+}

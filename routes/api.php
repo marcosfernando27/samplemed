@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix('blogs')->group(function () {
-    Route::get('/', [PostController::class, 'index'])->name('blog.index');
-    Route::post('/store', [PostController::class, 'store'])->name('blog.store');
+Route::prefix('posts')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('post.index');
+    Route::post('/store', [PostController::class, 'store'])->name('post.store');
+});
+
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('category.index');
 });
