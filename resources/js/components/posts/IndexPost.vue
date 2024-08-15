@@ -33,7 +33,7 @@
                         <td class="border  px-4 py-2">
                              <ul>
                                 <li v-for="category in post.categories" :key="category.id_category">
-                                    {{ category.category }}
+                                    - {{ category.category }}
                                 </li>
                             </ul>
                         </td>

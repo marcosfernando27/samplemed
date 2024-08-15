@@ -21,16 +21,17 @@
         <form @submit.prevent="store()" method="post">
 
             <p class="pt-5">
-                <label for="category">Categoria</label><span class="required">*</span><br>
-                <select v-model="formData.category_id" id="category" class="form-control">
-                    <option value="">... selecione a categoria</option>
-                    <option
-                        v-for="category in categories"
-                        :key=category.id_category
-                        :value=category.id_category>
-                        {{ category.category }}
-                    </option>
-                </select>
+                <label for="title">Selecione a(s) Categoria(s) </label><span class="required">*</span><br>
+                <div v-for="category in categories" :key=category.id_category>
+                    <input type="checkbox"
+                        :id="category.category"
+                        v-model=formData.category_id
+                        :value="category.id_category"
+                        class="my-3 mr-3 text-3xl h-5 w-5"
+                        >
+
+                    <label :for=category.category class="text-md"> {{ category.category }}</label>
+                </div>
 
                 <span v-if="errors.category_id" class="required">{{ errors.category_id[0] }}</span>
             </p>
@@ -78,7 +79,7 @@ export default {
             formData: {
                 title: '',
                 body: '',
-                category_id: ''
+                category_id: []
             },
             categories: [],
             isLoading: false,
@@ -107,6 +108,7 @@ export default {
 
                         this.resetFields()
                         this.success = true
+
                     }
                 })
                 .catch(error => {
@@ -142,7 +144,7 @@ export default {
         resetFields(){
                 this.formData.title = ''
                 this.formData.body = ''
-                this.formData.category_id = ''
+                this.formData.category_id = []
             },
         },
 

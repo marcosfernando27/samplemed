@@ -45,11 +45,8 @@ class PostController extends Controller
             // save post
             $post = Post::create($data);
 
-            // Create posts_categories
-            PostCategory::create([
-                'post_id'       => $post->id_post,
-                'category_id'   => $request['category_id']
-            ]);
+            // save table pivô
+            $post->categories()->sync($request['category_id']);
 
             DB::commit();
 

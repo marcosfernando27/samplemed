@@ -24,7 +24,7 @@ class PostRequest extends FormRequest
         return [
             'title'         => 'required|string|max:128',
             'body'          => 'required|string|max:2000',
-            'category_id'   => 'required'
+            'category_id'   => 'required|array'
         ];
     }
 
@@ -33,7 +33,7 @@ class PostRequest extends FormRequest
     return [
         'title.required'        => 'Campo título é obrigatório',
         'body.required'         => 'Campo conteúdo é obrigatório',
-        'category_id.required'  => 'Selecione uma categoria'
+        'category_id'           => 'Selecione uma categoria'
     ];
 }
 }
