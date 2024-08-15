@@ -17,16 +17,15 @@ use App\Http\Controllers\Api\CategoryController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->group(function(){
 
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [PostController::class, 'index'])->name('post.index');
+        Route::post('/store', [PostController::class, 'store'])->name('post.store');
+    });
 
-Route::prefix('posts')->group(function () {
-    Route::get('/', [PostController::class, 'index'])->name('post.index');
-    Route::post('/store', [PostController::class, 'store'])->name('post.store');
-});
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('category.index');
+    });
 
-Route::prefix('categories')->group(function () {
-    Route::get('/', [CategoryController::class, 'index'])->name('category.index');
 });

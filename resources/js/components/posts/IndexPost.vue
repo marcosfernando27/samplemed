@@ -1,5 +1,7 @@
 <template>
 
+    <a href="/logout" class="float-end text-red-600">[x] sair</a>
+
     <h1>
         Blog da Samplemed
     </h1>
@@ -16,6 +18,7 @@
                 <thead>
                     <tr>
                         <th class="border px-4 py-2">Data de criação</th>
+                        <th class="border px-4 py-2">Categoria</th>
                         <th class="border px-4 py-2">Título</th>
                         <th class="border px-4 py-2">Editar</th>
                         <th class="border px-4 py-2">Excluir</th>
@@ -26,6 +29,13 @@
                     <tr v-for="post in posts" :key=post.id_post>
                         <td class="border  px-4 py-2">
                             {{ post.created_at }}
+                        </td>
+                        <td class="border  px-4 py-2">
+                             <ul>
+                                <li v-for="category in post.categories" :key="category.id_category">
+                                    {{ category.category }}
+                                </li>
+                            </ul>
                         </td>
                         <td class="border px-4 py-2">
                             {{ post.title }}

@@ -16,4 +16,8 @@ class Category extends Model
     protected $fillable = [
         'category'
     ];
+
+    public function posts(){
+        return $this->belongsToMany(Post::class, 'posts_categories', 'category_id', 'post_id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PostCategory;
 
 class PostController extends Controller
 {
@@ -17,23 +18,15 @@ class PostController extends Controller
 
         try {
 
-            $posts = Post::select('title', 'created_at')
+            $posts = Post::with('categories')
                         ->orderBy('created_at', 'desc')
-                        ->paginate(20);
+                        ->paginate(10);
 
             return json_encode($posts);
 
         } catch (\Exception $e) {
             throw $e;
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-    */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -46,10 +39,17 @@ class PostController extends Controller
 
         try {
 
-            // requests all
-            $data                   = $request->all();
+            // Create post
+            $data                   = $request->except('category_id');
+            $data['user_id']        = auth()->id();
             // save post
-            Post::create($data);
+            $post = Post::create($data);
+
+            // Create posts_categories
+            PostCategory::create([
+                'post_id'       => $post->id_post,
+                'category_id'   => $request['category_id']
+            ]);
 
             DB::commit();
 

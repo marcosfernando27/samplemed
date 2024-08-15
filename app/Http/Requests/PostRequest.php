@@ -22,18 +22,18 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:128',
-            'body'  => 'required|string|max:2000',
-            'category_id' => 'required'
+            'title'         => 'required|string|max:128',
+            'body'          => 'required|string|max:2000',
+            'category_id'   => 'required'
         ];
     }
 
     public function messages(): array
 {
     return [
-        'title.required' => 'Campo Título é obrigatório',
-        'body.required' => 'Campo Conteúdo é obrigatório',
-        'category_id.required' => 'Selecione uma categoria'
+        'title.required'        => 'Campo título é obrigatório',
+        'body.required'         => 'Campo conteúdo é obrigatório',
+        'category_id.required'  => 'Selecione uma categoria'
     ];
 }
 }

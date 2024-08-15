@@ -1,4 +1,5 @@
 <template>
+    <a href="/logout" class="float-end text-red-600">[x] sair</a>
 
     <h1>
         Blog da Samplemed
@@ -8,7 +9,12 @@
 
     <div class="lg:w-full w-full bg-slate-100 rounded-md px-8">
         <h2 class="text-2xl py-5 float-start">Adicionar Post</h2>
-        <a href="/" class="link">Todos Post</a>
+        <a href="/posts" class="link">Todos Posts</a>
+    </div>
+
+
+    <div class="lg:w-full w-full bg-green-100 text-green-700 rounded-md px-8" v-show="success">
+        Post adicionado com Sucesso!
     </div>
 
     <div class="lg:w-full w-full">
@@ -76,15 +82,16 @@ export default {
             },
             categories: [],
             isLoading: false,
-            csrfToken: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            errors: {}
+            errors: {},
+            success: false,
+            csrfToken: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     },
 
     methods: {
 
         // salvar post
-        store() {
+        async store() {
 
             this.isLoading = true
 
@@ -95,7 +102,11 @@ export default {
                 .then(response =>{
 
                     if(response.status == 200) {
+                        this.errors = {}
                         this.isLoading = false
+
+                        this.resetFields()
+                        this.success = true
                     }
                 })
                 .catch(error => {
@@ -110,7 +121,7 @@ export default {
                 })
         },
 
-        // lista todas categorias
+        // listar todas categorias
         allCategories() {
 
             this.isLoading = true
@@ -126,8 +137,14 @@ export default {
                     this.isLoading = false
                     console.error(error);
                 })
-        }
-    },
+        },
+
+        resetFields(){
+                this.formData.title = ''
+                this.formData.body = ''
+                this.formData.category_id = ''
+            },
+        },
 
     mounted() {
         this.allCategories()

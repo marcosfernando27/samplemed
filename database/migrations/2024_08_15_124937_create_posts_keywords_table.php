@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts_categories', function (Blueprint $table) {
-            $table->increments('id_post_category');
+        Schema::create('posts_keywords', function (Blueprint $table) {
+            $table->increments('id_post_keyword');
             $table->integer('post_id')->unsigned()->index();
-            $table->integer('category_id')->unsigned()->index();
-            $table->foreign('post_id')->references('id_post')->on('posts');
-            $table->foreign('category_id')->references('id_category')->on('categories');
+            $table->integer('keyword_id')->unsigned()->index();
+            $table->foreign('post_id')->references('id_post')->on('posts')->cascadeOnDelete();
+            $table->foreign('keyword_id')->references('id_keyword')->on('keywords')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts_categories');
+        Schema::dropIfExists('posts_keywords');
     }
 };
